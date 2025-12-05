@@ -1,0 +1,40 @@
+# AGB Checker
+
+Een simpele tool om snel AGB-codes te controleren in het Vektis register via de command line.
+
+## Wat doet het?
+Het script zoekt automatisch in het Vektis AGB-register naar een opgegeven AGB-code. Het controleert tegelijkertijd of de code toebehoort aan een **Zorgverlener** of een **Onderneming/Vestiging**. Als er een match is, wordt de pagina direct geopend in je standaard browser.
+
+## Installatie
+
+1. Clone deze repository:
+   ```bash
+   git clone https://github.com/AdMaiora0/AGB_checker.git
+   ```
+2. Installeer de benodigde Python packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Gebruik
+
+Je kunt het script aanroepen via het meegeleverde PowerShell script `check-agb.ps1`.
+
+**Handmatige invoer:**
+```powershell
+./check-agb.ps1 01000585
+```
+
+**Via klembord:**
+Als je geen code meegeeft, kijkt het script automatisch naar de inhoud van je klembord.
+```powershell
+./check-agb.ps1
+```
+
+## Tip voor Windows (PowerShell)
+Maak een alias aan in je PowerShell profiel (`code $PROFILE`) om het script overal vandaan aan te kunnen roepen met `agb`:
+
+```powershell
+function agb { C:\Pad\Naar\AGB_checker\check-agb.ps1 $args }
+```
+*(Pas het pad aan naar waar je de map hebt opgeslagen)*

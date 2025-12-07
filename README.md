@@ -18,23 +18,31 @@ Het script zoekt automatisch in het Vektis AGB-register naar een opgegeven AGB-c
 
 ## Gebruik
 
-Je kunt het script aanroepen via het meegeleverde PowerShell script `check-agb.ps1`.
+Je kunt het script aanroepen via het meegeleverde PowerShell script `check-agb.ps1` of via het Batch script `agb.bat`.
 
 **Handmatige invoer:**
 ```powershell
 ./check-agb.ps1 01000585
+# of
+agb.bat 01000585
 ```
 
 **Via klembord:**
 Als je geen code meegeeft, kijkt het script automatisch naar de inhoud van je klembord.
 ```powershell
 ./check-agb.ps1
+# of
+agb.bat
 ```
 
-## Tip voor Windows (PowerShell)
+## Tip voor Windows
+### PowerShell
 Maak een alias aan in je PowerShell profiel (`code $PROFILE`) om het script overal vandaan aan te kunnen roepen met `agb`:
 
 ```powershell
 function agb { C:\Pad\Naar\AGB_checker\check-agb.ps1 $args }
 ```
+
+### Command Prompt (cmd) / Run
+Voeg de map waar `agb.bat` staat toe aan je Windows PATH omgevingsvariabele. Dan kun je simpelweg `agb` typen in elke command prompt of in het 'Uitvoeren' (Win+R) venster.
 *(Pas het pad aan naar waar je de map hebt opgeslagen)*

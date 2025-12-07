@@ -4,7 +4,7 @@
 Een zelfgeschreven tool om razendsnel AGB-codes te checken in het Vektis register zonder handmatig naar de website te hoeven navigeren en te klikken.
 
 ## Hoe werkt het?
-Het script (`agb_checker.py`) wordt aangestuurd door een PowerShell wrapper (`check-agb.ps1`).
+Het script (`agb_checker.py`) wordt aangestuurd door een PowerShell wrapper (`check-agb.ps1`) of een Batch script (`agb.bat`).
 1. Het haalt een veiligheidstoken op van Vektis.
 2. Het zoekt **parallel** naar de code als 'Zorgverlener' én 'Onderneming'.
 3. Bij een match opent het direct de juiste pagina in je browser.
@@ -17,7 +17,9 @@ Clone de repo of kopieer de map `AGB_checker` naar je `dev` folder.
 Installeer dependencies: `pip install -r requirements.txt`
 
 ### 2. Alias instellen (Eenmalig)
-Om het commando `agb` overal te kunnen gebruiken:
+Je hebt twee opties om het commando `agb` overal te kunnen gebruiken:
+
+**Optie A: PowerShell (Aanbevolen)**
 1. Open PowerShell.
 2. Typ `code $PROFILE` (of `notepad $PROFILE`).
 3. Voeg deze regel toe (pas het pad aan):
@@ -26,12 +28,16 @@ Om het commando `agb` overal te kunnen gebruiken:
    ```
 4. Sla op en herstart PowerShell.
 
+**Optie B: Command Prompt / Run (via .bat)**
+1. Voeg de map waar `agb.bat` staat toe aan je Windows **PATH** omgevingsvariabele.
+2. Nu kun je in elke command prompt of via Win+R simpelweg `agb` typen.
+
 ### 3. Dagelijks gebruik
 De tool is slim en kijkt naar je klembord als je niets invult.
 
 *   **Scenario A (Meest gebruikt):**
     1. Kopieer een AGB-code (Ctrl+C) uit een mail, Excel of dossier.
-    2. Open PowerShell (Win+R -> `pwsh` of via terminal).
+    2. Open PowerShell (of Win+R).
     3. Typ `agb` en druk op Enter.
     4. *De browser opent direct met de info.*
 

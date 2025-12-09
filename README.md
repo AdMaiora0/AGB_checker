@@ -35,6 +35,14 @@ Als je geen code meegeeft, kijkt het script automatisch naar de inhoud van je kl
 agb.bat
 ```
 
+## Testen
+De repository bevat een bestand `test_agb.txt` met voorbeeldcodes. Je kunt de werking van het script verifiëren door deze codes te gebruiken.
+
+```powershell
+# Test alle codes in het bestand (PowerShell)
+Get-Content "test_agb.txt" | ForEach-Object { python agb_checker.py $_.Trim() }
+```
+
 ## Tip voor Windows
 ### PowerShell
 Maak een alias aan in je PowerShell profiel (`code $PROFILE`) om het script overal vandaan aan te kunnen roepen met `agb`:

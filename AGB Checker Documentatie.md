@@ -6,8 +6,22 @@ Een zelfgeschreven tool om razendsnel AGB-codes te checken in het Vektis registe
 ## Hoe werkt het?
 Het script (`agb_checker.py`) wordt aangestuurd door een PowerShell wrapper (`check-agb.ps1`) of een Batch script (`agb.bat`).
 1. Het haalt een veiligheidstoken op van Vektis.
-2. Het zoekt **parallel** naar de code als 'Zorgverlener' én 'Onderneming'.
+2. Het zoekt automatisch naar de code als 'Zorgverlener' én 'Onderneming'.
 3. Bij een match opent het direct de juiste pagina in je browser.
+
+## Testen
+Er is een bestand `test_agb.txt` toegevoegd met een aantal geldige AGB-codes. Je kunt het script testen door deze codes één voor één aan te bieden.
+
+Voorbeeld PowerShell commando om alle testcodes te checken:
+```powershell
+Get-Content "test_agb.txt" | ForEach-Object { 
+    $code = $_.Trim()
+    if ($code) { 
+        python agb_checker.py $code
+        Start-Sleep -Seconds 2
+    } 
+}
+```
 
 ## Gebruik op Werk Laptop (Windows)
 

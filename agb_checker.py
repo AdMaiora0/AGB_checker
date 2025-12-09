@@ -107,6 +107,8 @@ def main():
     search_types = ['zorgverlener', 'onderneming,vestiging']
     found_links = []
 
+    # Parallel execution is safe: requests.Session with HTTPAdapter uses thread-safe urllib3
+    # connection pooling. We only read from session (POST requests), never modify session state.
     with ThreadPoolExecutor(max_workers=2) as executor:
         future_to_type = {
             executor.submit(perform_search, session, results_url, token, agb_code, stype): stype 

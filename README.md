@@ -3,7 +3,13 @@
 Een simpele tool om snel AGB-codes te controleren in het Vektis register via de command line.
 
 ## Wat doet het?
-Het script zoekt automatisch in het Vektis AGB-register naar een opgegeven AGB-code. Het controleert tegelijkertijd of de code toebehoort aan een **Zorgverlener** of een **Onderneming/Vestiging**. Als er een match is, wordt de pagina direct geopend in je standaard browser.
+Het script zoekt automatisch in het Vektis AGB-register naar een opgegeven AGB-code. Het controleert **parallel** of de code toebehoort aan een **Zorgverlener** of een **Onderneming/Vestiging**. Als er een match is, wordt de pagina direct geopend in je standaard browser.
+
+### Performance Optimalisaties
+- **Parallel zoeken**: Beide zoektypes worden tegelijkertijd uitgevoerd voor snellere resultaten
+- **Geoptimaliseerde HTTP-verbindingen**: Connection pooling en keep-alive voor Windows
+- **Snellere HTML parsing**: Gebruikt lxml parser (2-3x sneller dan standaard parser)
+- **Vroege exit**: Stopt direct na het vinden van het eerste resultaat
 
 ## Installatie
 

@@ -9,6 +9,8 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
     'Accept-Language': 'nl-NL,nl;q=0.9,en-US;q=0.8,en;q=0.7',
+    'Origin': 'https://www.vektis.nl',
+    'Referer': 'https://www.vektis.nl/agb-register/zoeken',
 }
 
 def get_csrf_token(session, url):
@@ -24,17 +26,16 @@ def get_csrf_token(session, url):
             sys.exit(1)
     except requests.RequestException as e:
         print(f"Error fetching search page: {e}")
-        sys.exit(1)
-
 def perform_search(session, url, token, agb_code, party_type):
     payload = {
         '_token': token,
-        'naam': '',
         'agbcode': agb_code,
-        'plaats': '',
         'zorgpartijtype': party_type,
         'zorgsoort': ''
     }
+    
+    if party_type == 'onderneming,vestiging':
+        payload['plaats'] = ''
     
     try:
         # Use a separate session or the same? Requests session is not thread-safe for simultaneous requests 
@@ -86,7 +87,7 @@ def main():
         print("Gebruik: python agb_checker.py <AGB-code> [--dry-run]")
         sys.exit(1)
         
-    agb_code = args[0]
+    agb_code = args[0].strip()
     dry_run = "--dry-run" in sys.argv
     
     base_url = "https://www.vektis.nl"
@@ -98,28 +99,20 @@ def main():
     print("Verbinding maken met Vektis...")
     token = get_csrf_token(session, search_url)
     
-    print(f"Zoeken naar AGB code {agb_code}...")
+    print(f"Zoeken naar AGB code '{agb_code}'...")
     
     # Define the search types
     search_types = ['zorgverlener', 'onderneming,vestiging']
     found_links = []
 
-    # Execute searches in parallel
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        # Map the search function to the types
-        future_to_type = {
-            executor.submit(perform_search, session, results_url, token, agb_code, stype): stype 
-            for stype in search_types
-        }
-        
-        for future in concurrent.futures.as_completed(future_to_type):
-            stype = future_to_type[future]
-            try:
-                links = future.result()
-                if links:
-                    found_links.extend(links)
-            except Exception as exc:
-                print(f"Zoekopdracht voor {stype} genereerde een uitzondering: {exc}")
+    # Execute searches sequentially
+    for stype in search_types:
+        try:
+            links = perform_search(session, results_url, token, agb_code, stype)
+            if links:
+                found_links.extend(links)
+        except Exception as exc:
+            print(f"Zoekopdracht voor {stype} genereerde een uitzondering: {exc}")
 
     if found_links:
         # Deduplicate links just in case, though unlikely to overlap types

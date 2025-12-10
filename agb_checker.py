@@ -109,17 +109,13 @@ def main():
 
     # Parallel execution is safe: requests.Session with HTTPAdapter uses thread-safe urllib3
     # connection pooling. We only read from session (POST requests), never modify session state.
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        future_to_type = {
-            executor.submit(perform_search, session, results_url, token, agb_code, stype): stype 
-            for stype in search_types
-        }
-        
-        for future in as_completed(future_to_type):
-            links = future.result()
-            if links:
-                found_links.extend(links)
-                break
+    # However, Vektis seems to block or fail on concurrent requests with the same token/session.
+    # Switching back to sequential execution for reliability.
+    for stype in search_types:
+        links = perform_search(session, results_url, token, agb_code, stype)
+        if links:
+            found_links.extend(links)
+            break
 
     if found_links:
         target_url = found_links[0]
